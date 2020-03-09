@@ -70,12 +70,13 @@ public class ParkingDataBaseIT {
         
         Thread.sleep(500);
         parkingService.processExitingVehicle();
+
         
         getTicketTest = ticketDAO.getTicket("ABCDEF");
 
-        //TODO: check that the fare generated and out time are populated correctly in the database
         assertThat(getTicketTest.getPrice()).isNotEqualTo(0L);
       	assertThat(getTicketTest.getInTime()).isBeforeOrEqualTo(getTicketTest.getOutTime());
+
     }
 
 }
