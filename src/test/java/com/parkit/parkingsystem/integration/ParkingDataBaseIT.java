@@ -70,11 +70,13 @@ public class ParkingDataBaseIT {
         
         Thread.sleep(500);
         parkingService.processExitingVehicle();
+
         
         getTicketTest = ticketDAO.getTicket("ABCDEF");
 
         assertThat(getTicketTest.getPrice()).isNotEqualTo(0L);
       	assertThat(getTicketTest.getInTime()).isBeforeOrEqualTo(getTicketTest.getOutTime());
+
     }
 
 }

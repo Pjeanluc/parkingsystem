@@ -14,6 +14,8 @@ public class FareCalculatorService {
         long inHour = ticket.getInTime().getTime();
         long outHour = ticket.getOutTime().getTime();
 
+        double duration = outHour - inHour;
+
         double durationTotale = (double) (outHour - inHour)/(60*60*1000);
         
         double durationFirstPeriod = 0d;
