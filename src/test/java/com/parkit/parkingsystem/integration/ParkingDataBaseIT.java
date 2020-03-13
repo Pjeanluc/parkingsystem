@@ -56,7 +56,7 @@ public class ParkingDataBaseIT {
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
         parkingService.processIncomingVehicle();
         
-		Ticket getTicketTest = ticketDAO.getTicket("ABCDEF");
+		Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
 		assertThat(getTicketTest.getVehicleRegNumber()).isEqualTo("ABCDEF");
 		assertThat(getTicketTest.getParkingSpot().isAvailable()).isEqualTo(false);
 		
@@ -66,15 +66,15 @@ public class ParkingDataBaseIT {
     public void testParkingLotExit() throws Exception{
         testParkingACar();
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        Ticket getTicketTest = ticketDAO.getTicket("ABCDEF");
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
         
         Thread.sleep(500);
         parkingService.processExitingVehicle();
 
         
-        getTicketTest = ticketDAO.getTicket("ABCDEF");
+        getTicketTest = ticketDAO.getLastTicket("ABCDEF");
 
-        assertThat(getTicketTest.getPrice()).isNotEqualTo(0L);
+        assertThat(getTicketTest.getPrice()).isEqualTo(0L);
       	assertThat(getTicketTest.getInTime()).isBeforeOrEqualTo(getTicketTest.getOutTime());
 
     }
