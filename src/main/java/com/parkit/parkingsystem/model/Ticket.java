@@ -44,19 +44,31 @@ public class Ticket {
     }
 
     public Date getInTime() {
-        return inTime;
+    	Date localDate = inTime;
+		return localDate;
     }
 
     public void setInTime(Date inTime) {
-        this.inTime = inTime;
+    	if (inTime == null) {
+			this.inTime = null;
+		}
+		else {
+			this.inTime = new Date(inTime.getTime());
+		}
     }
 
     public Date getOutTime() {
-        return outTime;
+    	Date localDate = outTime;
+		return localDate;
     }
 
     public void setOutTime(Date outTime) {
-        this.outTime = outTime;
+    	if (outTime == null) {
+			this.outTime = null;
+		}
+		else {
+			this.outTime = new Date(outTime.getTime());
+		}
     }
 
 	public int getNbOfEntry() {
