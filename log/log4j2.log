@@ -4284,3 +4284,74 @@ java.lang.IllegalArgumentException: Out time provided is incorrect:Fri Mar 06 11
 2020-03-06 15:49:23 [main] INFO  DataBaseConfig:13 - Create DB connection
 2020-03-06 15:49:23 [main] INFO  DataBaseConfig:34 - Closing Prepared Statement
 2020-03-06 15:49:23 [main] INFO  DataBaseConfig:23 - Closing DB connection
+2020-03-24 17:12:52 [main] INFO  App:10 - Initializing Parking System
+2020-03-24 17:12:52 [main] INFO  InteractiveShell:14 - App initialized!!!
+2020-03-24 17:48:35 [main] INFO  DataBaseConfig:13 - Create DB connection
+2020-03-24 17:48:36 [main] INFO  DataBaseConfig:45 - Closing Result Set
+2020-03-24 17:48:36 [main] INFO  DataBaseConfig:34 - Closing Prepared Statement
+2020-03-24 17:48:36 [main] INFO  DataBaseConfig:23 - Closing DB connection
+2020-03-24 17:48:36 [main] ERROR ParkingService:81 - Error fetching next available parking slot
+java.lang.Exception: Error fetching parking number from DB. Parking slots might be full
+	at com.parkit.parkingsystem.service.ParkingService.getNextParkingNumberIfAvailable(ParkingService.java:76) [classes/:?]
+	at com.parkit.parkingsystem.service.ParkingService.processIncomingVehicle(ParkingService.java:32) [classes/:?]
+	at com.parkit.parkingsystem.service.InteractiveShell.loadInterface(InteractiveShell.java:28) [classes/:?]
+	at com.parkit.parkingsystem.App.main(App.java:11) [classes/:?]
+2020-03-24 17:48:55 [main] INFO  App:10 - Initializing Parking System
+2020-03-24 17:48:55 [main] INFO  InteractiveShell:14 - App initialized!!!
+2020-03-24 17:48:55 [main] INFO  App:10 - Initializing Parking System
+2020-03-24 17:48:55 [main] INFO  InteractiveShell:14 - App initialized!!!
+2020-03-24 17:49:56 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:57 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:14 - Create DB connection
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:46 - Closing Result Set
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:35 - Closing Prepared Statement
+2020-03-24 17:49:58 [main] INFO  DataBaseTestConfig:24 - Closing DB connection
