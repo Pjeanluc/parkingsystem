@@ -1,18 +1,69 @@
 package com.parkit.parkingsystem;
 
 import static org.junit.jupiter.api.Assertions.*;
-
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Date;
+import java.util.NoSuchElementException;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
 class InuptReaderUtilTest {
 	
-		 
+		
+	@Test
+	public void readVehicleNumberTest() throws Exception {
+		//ARRANGE
+	    String input = "ABCDEF";
+	    InputStream in = new ByteArrayInputStream(input.getBytes());
+	    System.setIn(in);
+	    InputReaderUtil inputSelection= new InputReaderUtil();
+	    
+	    //ASSERT
+	    assertEquals("ABCDEF", inputSelection.readVehicleRegistrationNumber());
+	   
+	}
+	
+	@Test
+	public void readSelectionTest() throws IOException {
+		//ARRANGE
+	    String input = "3";
+	    InputStream in = new ByteArrayInputStream(input.getBytes());
+	    System.setIn(in);
+	    InputReaderUtil inputSelection= new InputReaderUtil();
+	    
+	    //ASSERT
+	    assertEquals(3, inputSelection.readSelection());
+	    
+	}
+	
+	@Test
+	public void readVehicleRegistrationNumberExceptionTest() {
+		//ARRANGE
+		String input = "";
+	    InputStream in = new ByteArrayInputStream(input.getBytes());
+	    System.setIn(in);
+	    InputReaderUtil inputSelection= new InputReaderUtil();
+	    
+	    //ASSERT
+	    assertThrows(NoSuchElementException.class, () -> {inputSelection.readVehicleRegistrationNumber();});
+	}
+	
+	@Test
+	public void readSelectionExceptionTest() {
+		//ARRANGE
+		String input = "";
+	    InputStream in = new ByteArrayInputStream(input.getBytes());
+	    System.setIn(in);
+	    InputReaderUtil inputSelection= new InputReaderUtil();
+	    
+	    //ASSERT
+	    assertEquals(-1, inputSelection.readSelection());
+	}
+	
 	@Test
 	void caculateDiffInHoursMoreOneHours() {
 		//ARRANGE
