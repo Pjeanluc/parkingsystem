@@ -24,7 +24,7 @@ class InuptReaderUtilTest {
 	    
 	    //ASSERT
 	    assertEquals("ABCDEF", inputSelection.readVehicleRegistrationNumber());
-	   
+	  
 	}
 	
 	@Test
