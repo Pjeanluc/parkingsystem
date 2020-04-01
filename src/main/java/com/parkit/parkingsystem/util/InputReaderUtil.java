@@ -3,40 +3,47 @@ package com.parkit.parkingsystem.util;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Scanner;
 
 public class InputReaderUtil {
 
-    private static Scanner scan;
+    //private static Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
     private static final Logger logger = LogManager.getLogger("InputReaderUtil");
-    
-    public InputReaderUtil(){
-    	InputReaderUtil.scan = new Scanner(System.in, "UTF-8");
-    }
-    
+        
 
     public int readSelection() {
+    	Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
         try {
-            int input = Integer.parseInt(scan.nextLine());
+        	String in = scan.nextLine();
+            int input = Integer.parseInt(in);
+            scan.close();
             return input;
+            
         }catch(Exception e){
             logger.error("Error while reading user input from Shell", e);
             System.out.println("Error reading input. Please enter valid number for proceeding further");
+            scan.close();
             return -1;
+          
         }
     }
 
     public String readVehicleRegistrationNumber() throws Exception {
+    	Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
         try {
             String vehicleRegNumber= scan.nextLine();
             if(vehicleRegNumber == null || vehicleRegNumber.trim().length()==0) {
                 throw new IllegalArgumentException("Invalid input provided");
             }
+            scan.close();
             return vehicleRegNumber;
         }catch(Exception e){
             logger.error("Error while reading user input from Shell", e);
+            scan.close();
             System.out.println("Error reading input. Please enter a valid string for vehicle registration number");
             throw e;
+            
         }
     }
     
