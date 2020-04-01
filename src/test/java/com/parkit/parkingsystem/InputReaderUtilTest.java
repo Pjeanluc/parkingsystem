@@ -7,16 +7,19 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.parkit.parkingsystem.util.InputReaderUtil;
 
-class InuptReaderUtilTest {
+class InputReaderUtilTest {
 	
-		
+	
+	
 	@Test
 	public void readVehicleNumberTest() throws Exception {
 		//ARRANGE
+		InputStream sysInBackup = System.in;
 	    String input = "ABCDEF";
 	    InputStream in = new ByteArrayInputStream(input.getBytes());
 	    System.setIn(in);
@@ -24,12 +27,16 @@ class InuptReaderUtilTest {
 	    
 	    //ASSERT
 	    assertEquals("ABCDEF", inputSelection.readVehicleRegistrationNumber());
+	    System.setIn(sysInBackup);
 	  
 	}
+	
+	
 	
 	@Test
 	public void readSelectionTest() throws IOException {
 		//ARRANGE
+		InputStream sysInBackup = System.in;
 	    String input = "3";
 	    InputStream in = new ByteArrayInputStream(input.getBytes());
 	    System.setIn(in);
@@ -37,8 +44,11 @@ class InuptReaderUtilTest {
 	    
 	    //ASSERT
 	    assertEquals(3, inputSelection.readSelection());
+	    System.setIn(sysInBackup);
+	    
 	    
 	}
+	
 	
 	@Test
 	public void readVehicleRegistrationNumberExceptionTest() {
@@ -52,6 +62,7 @@ class InuptReaderUtilTest {
 	    assertThrows(NoSuchElementException.class, () -> {inputSelection.readVehicleRegistrationNumber();});
 	}
 	
+	
 	@Test
 	public void readSelectionExceptionTest() {
 		//ARRANGE
@@ -63,6 +74,7 @@ class InuptReaderUtilTest {
 	    //ASSERT
 	    assertEquals(-1, inputSelection.readSelection());
 	}
+	
 	
 	@Test
 	void caculateDiffInHoursMoreOneHours() {

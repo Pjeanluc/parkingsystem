@@ -15,8 +15,9 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Date;
-
 import static org.assertj.core.api.Assertions.assertThat;
+
+
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -75,6 +76,7 @@ public class ParkingServiceTest {
 		
     }
     
+    
     @Test
     public void getNextParkingNumberIfAvailableTest() {
     	//WHEN
@@ -84,4 +86,6 @@ public class ParkingServiceTest {
     	//THEN
     	assertThat(parkingService.getNextParkingNumberIfAvailable()).isNotNull();
     }
+    
+  
 }
