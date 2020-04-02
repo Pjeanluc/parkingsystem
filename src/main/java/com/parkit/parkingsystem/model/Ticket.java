@@ -44,13 +44,13 @@ public class Ticket {
     }
 
     public Date getInTime() {
-    	Date localDate = inTime;
-		return localDate;
+    Date localDate = inTime;
+        return localDate;
     }
 
     public void setInTime(Date inTime) {
-    	if (inTime == null) {
-			this.inTime = null;
+        if (inTime == null) {
+	       this.inTime = null;
 		}
 		else {
 			this.inTime = new Date(inTime.getTime());

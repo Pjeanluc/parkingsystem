@@ -13,9 +13,9 @@ public class InputReaderUtil {
         
 
     public int readSelection() {
-    	Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
+        Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
         try {
-        	String in = scan.nextLine();
+            String in = scan.nextLine();
             int input = Integer.parseInt(in);
             scan.close();
             return input;
@@ -30,7 +30,7 @@ public class InputReaderUtil {
     }
 
     public String readVehicleRegistrationNumber() throws Exception {
-    	Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
+        Scanner scan = new Scanner(System.in,StandardCharsets.UTF_8.name());
         try {
             String vehicleRegNumber= scan.nextLine();
             if(vehicleRegNumber == null || vehicleRegNumber.trim().length()==0) {

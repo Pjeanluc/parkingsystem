@@ -48,8 +48,7 @@ public class ParkingService {
                 nbEntry = ticketDAO.getNumberOfTicket(vehicleRegNumber);
                 ticket.setNbOfEntry(nbEntry);
                 if(nbEntry >1 ) {
-                	
-                	System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
+                    System.out.println("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount.");
                 }
                 
                 System.out.println("Generated Ticket and saved in DB");
