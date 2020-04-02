@@ -104,6 +104,21 @@ class InputReaderUtilTest {
 	}
 	
 	@Test
+	void caculateDiffInHoursMoreOneDay() {
+		//ARRANGE
+		Date outTime = new Date();
+		outTime.setTime(System.currentTimeMillis());
+		
+		       
+		//ACT
+		double duration = InputReaderUtil.calculateDiffInHours((outTime.getTime()-( 25 * 60 * 60 * 1000)), outTime.getTime());
+		
+		//ASSERT
+		assertEquals(25.0, duration);
+		
+	}
+	
+	@Test
 	void durationlessThirtyMinute() {
 		//ARRANGE
 		double durationReel = 0.4;

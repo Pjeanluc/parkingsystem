@@ -63,9 +63,13 @@ public class ParkingDataBaseIT {
 
     @Test
     public void testParkingACar(){
+    	//GIVEN
         ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        
+        //WHEN
         parkingService.processIncomingVehicle();
         
+        //THEN        
 		Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
 		assertThat(getTicketTest.getVehicleRegNumber()).isEqualTo("ABCDEF");
 		assertThat(getTicketTest.getParkingSpot().isAvailable()).isEqualTo(false);
@@ -74,40 +78,43 @@ public class ParkingDataBaseIT {
 
     @Test
     public void testParkingLotExitLessThirtyMinutes() throws Exception{
-       
+    	//GIVEN       
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     	Date inTime = new Date();
     	Date outTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  10 * 60 * 1000) ); //10 minutes
         
         //mock incoming vehicle
-        processInjectionParkingSpotByMock(false);
-        processInjectionTicketByMock(inTime,outTime);
+        processInjectionParkingSpot(false);
+        processInjectionTicket(inTime,outTime);
         
+        //WHEN
         parkingService.processExitingVehicle();
         
-        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
-       
+        //THEN        
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");       
         assertThat(getTicketTest.getPrice()).isEqualTo(0L);
+        assertThat(getTicketTest.getOutTime()).isAfter(getTicketTest.getInTime());
       
     }
     
     @Test
     public void testParkingLotExitMoreThirtyminutes() throws Exception{
-       
+        //GIVEN
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     	Date inTime = new Date();
     	Date outTime = new Date();
         inTime.setTime( System.currentTimeMillis() - (  90* 60 * 1000) ); 
         
         //mock incoming vehicle
-        processInjectionParkingSpotByMock(false);
-        processInjectionTicketByMock(inTime,outTime);
+        processInjectionParkingSpot(false);
+        processInjectionTicket(inTime,outTime);
         
+        //WHEN
         parkingService.processExitingVehicle();
         
-        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
-       
+        //THEN
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");       
         assertThat(getTicketTest.getPrice()).isEqualTo(1.5);
       	
     }
@@ -116,6 +123,7 @@ public class ParkingDataBaseIT {
     @Test
     public void testParkingLotExitMoreThirtyminutesWithDiscount() throws Exception{
        
+    	//GIVEN
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     	    	
         //first Ticket 2h before
@@ -123,23 +131,24 @@ public class ParkingDataBaseIT {
     	Date outTime1 = new Date();
         inTime1.setTime( System.currentTimeMillis() - (  120* 60 * 1000) ); 
         outTime1.setTime( System.currentTimeMillis() - (  110* 60 * 1000) ); 
-        processInjectionTicketByMock(inTime1,outTime1);
+        processInjectionTicket(inTime1,outTime1);
         
         //Process incoming vehicle       
     	Date inTime2 = new Date();    	
         inTime2.setTime( System.currentTimeMillis() - (  90* 60 * 1000) ); 
-        processInjectionParkingSpotByMock(false);
-        processInjectionTicketByMock(inTime2,null);
+        processInjectionParkingSpot(false);
+        processInjectionTicket(inTime2,null);
            
+        //WHEN
         parkingService.processExitingVehicle();
         
-        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
-       
+        //THEN
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");       
         assertThat(getTicketTest.getPrice()).isEqualTo(1.42);
         }
     
     
- public void processInjectionTicketByMock(Date inTime, Date outTime) { 
+ public void processInjectionTicket(Date inTime, Date outTime) { 
 	//To avoid dependencies with other functions, Data injection in database
 			Connection con = null;
 			PreparedStatement ps = null;
@@ -167,9 +176,9 @@ public class ParkingDataBaseIT {
 				dataBaseTestConfig.closeConnection(con);
 			}
     }
-public void processInjectionParkingSpotByMock(boolean isAvaliable) { 
+public void processInjectionParkingSpot(boolean isAvaliable) { 
 		
-		//To avoid dependancies with other fonctions, Data injection in database
+		//To avoid dependencies with other functions, Data injection in database
 		Connection con = null;
 		PreparedStatement ps = null;
 		try {

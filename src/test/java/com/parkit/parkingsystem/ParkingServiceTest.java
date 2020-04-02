@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.Date;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -73,6 +75,27 @@ public class ParkingServiceTest {
 		 
 		//THEN
 		verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
+		
+    }
+    
+    @Test
+    public void processIncommingVehicleTestWithDiscount(){
+    	
+    	ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+	    System.setOut(new PrintStream(outContent));
+	    
+    	//GIVEN
+	    when(ticketDAO.getNumberOfTicket(any(String.class))).thenReturn(1);
+		when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(1);
+		when(inputReaderUtil.readSelection()).thenReturn(1);
+		when(ticketDAO.getNumberOfTicket("ABCDEF")).thenReturn(3);
+
+		//WHEN		
+		parkingService.processIncomingVehicle();
+		 
+		//THEN
+		verify(parkingSpotDAO, Mockito.times(1)).updateParking(any(ParkingSpot.class));
+		assertThat(outContent.toString()).contains("Welcome back! As a recurring user of our parking lot, you'll benefit from a 5% discount");
 		
     }
     
