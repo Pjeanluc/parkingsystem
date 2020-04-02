@@ -7,7 +7,6 @@ import java.io.InputStream;
 import java.util.Date;
 import java.util.NoSuchElementException;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import com.parkit.parkingsystem.util.InputReaderUtil;

@@ -1,5 +1,6 @@
 package com.parkit.parkingsystem.integration;
 
+import com.parkit.parkingsystem.constants.DBConstants;
 import com.parkit.parkingsystem.dao.ParkingSpotDAO;
 import com.parkit.parkingsystem.dao.TicketDAO;
 import com.parkit.parkingsystem.integration.config.DataBaseTestConfig;
@@ -14,7 +15,15 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.Timestamp;
+import java.util.Date;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -25,6 +34,8 @@ public class ParkingDataBaseIT {
     private static ParkingSpotDAO parkingSpotDAO;
     private static TicketDAO ticketDAO;
     private static DataBasePrepareService dataBasePrepareService;
+    
+    private static final Logger logger = LogManager.getLogger("ParkingDataBaseIT");
    
     @Mock
     private static InputReaderUtil inputReaderUtil;
@@ -40,7 +51,7 @@ public class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
-        when(inputReaderUtil.readSelection()).thenReturn(1);
+        lenient().when(inputReaderUtil.readSelection()).thenReturn(1);
         when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
         dataBasePrepareService.clearDataBaseEntries();
     }
@@ -62,20 +73,122 @@ public class ParkingDataBaseIT {
     }
 
     @Test
-    public void testParkingLotExit() throws Exception{
-        testParkingACar();
-        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
-        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
+    public void testParkingLotExitLessThirtyMinutes() throws Exception{
+       
+    	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+    	Date inTime = new Date();
+    	Date outTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - (  10 * 60 * 1000) ); //10 minutes
         
-        Thread.sleep(500);
+        //mock incoming vehicle
+        processInjectionParkingSpotByMock(false);
+        processInjectionTicketByMock(inTime,outTime);
+        
         parkingService.processExitingVehicle();
-
         
-        getTicketTest = ticketDAO.getLastTicket("ABCDEF");
-
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
+       
         assertThat(getTicketTest.getPrice()).isEqualTo(0L);
-      	assertThat(getTicketTest.getInTime()).isBeforeOrEqualTo(getTicketTest.getOutTime());
-
+      
     }
-
+    
+    @Test
+    public void testParkingLotExitMoreThirtyminutes() throws Exception{
+       
+    	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+    	Date inTime = new Date();
+    	Date outTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - (  90* 60 * 1000) ); 
+        
+        //mock incoming vehicle
+        processInjectionParkingSpotByMock(false);
+        processInjectionTicketByMock(inTime,outTime);
+        
+        parkingService.processExitingVehicle();
+        
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
+       
+        assertThat(getTicketTest.getPrice()).isEqualTo(1.5);
+      	
+    }
+    
+    
+    @Test
+    public void testParkingLotExitMoreThirtyminutesWithDiscount() throws Exception{
+       
+    	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+    	    	
+        //first Ticket 2h before
+    	Date inTime1 = new Date();
+    	Date outTime1 = new Date();
+        inTime1.setTime( System.currentTimeMillis() - (  120* 60 * 1000) ); 
+        outTime1.setTime( System.currentTimeMillis() - (  110* 60 * 1000) ); 
+        processInjectionTicketByMock(inTime1,outTime1);
+        
+        //Process incoming vehicle       
+    	Date inTime2 = new Date();    	
+        inTime2.setTime( System.currentTimeMillis() - (  90* 60 * 1000) ); 
+        processInjectionParkingSpotByMock(false);
+        processInjectionTicketByMock(inTime2,null);
+           
+        parkingService.processExitingVehicle();
+        
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
+       
+        assertThat(getTicketTest.getPrice()).isEqualTo(1.42);
+        }
+    
+    
+ public void processInjectionTicketByMock(Date inTime, Date outTime) { 
+	//To avoid dependencies with other functions, Data injection in database
+			Connection con = null;
+			PreparedStatement ps = null;
+			try {
+				con = dataBaseTestConfig.getConnection();
+								
+				//Ticket Injection
+				ps = con.prepareStatement(DBConstants.SAVE_TICKET);
+				// ID, PARKING_NUMBER, VEHICLE_REG_NUMBER, PRICE, IN_TIME, OUT_TIME)
+				String ticketVehicleRegNumber = "ABCDEF";
+				double ticketPrice = 0;
+				int parkingSpotId = 1;
+				ps.setInt(1, parkingSpotId);
+				ps.setString(2, ticketVehicleRegNumber);
+				ps.setDouble(3, ticketPrice);
+				ps.setTimestamp(4,new Timestamp(inTime.getTime()));
+				ps.setTimestamp(5,outTime == null ? null : (new Timestamp(outTime.getTime())));
+				ps.execute();
+				
+		
+			} catch (Exception ex) {
+				logger.error("Error updating parking info during test", ex);
+						} finally {
+				dataBaseTestConfig.closePreparedStatement(ps);
+				dataBaseTestConfig.closeConnection(con);
+			}
+    }
+public void processInjectionParkingSpotByMock(boolean isAvaliable) { 
+		
+		//To avoid dependancies with other fonctions, Data injection in database
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = dataBaseTestConfig.getConnection();
+			// ParkingSpot injection
+			ps = con.prepareStatement(DBConstants.UPDATE_PARKING_SPOT);
+						
+			int parkingSpotId = 1;
+			ps.setBoolean(1, isAvaliable);
+			ps.setInt(2, parkingSpotId);
+			ps.executeUpdate();
+			dataBaseTestConfig.closePreparedStatement(ps);
+									
+	
+		} catch (Exception ex) {
+			logger.error("Error updating parking info during test", ex);
+					} finally {
+			dataBaseTestConfig.closePreparedStatement(ps);
+			dataBaseTestConfig.closeConnection(con);
+		}
+}
 }

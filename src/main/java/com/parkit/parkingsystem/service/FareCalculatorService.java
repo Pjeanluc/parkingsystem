@@ -33,6 +33,6 @@ public class FareCalculatorService {
         	price = price * Fare.DISCOUNT_RECURRING_ENTRY;
         }
         
-        ticket.setPrice(price);
+        ticket.setPrice(InputReaderUtil.arrondir(price,2));
     }
 }
