@@ -110,5 +110,25 @@ public class ParkingServiceTest {
     	assertThat(parkingService.getNextParkingNumberIfAvailable()).isNotNull();
     }
     
+    @Test
+    public void getNextParkingNumberIfAvailableTestNotAvaible() {
+    	//WHEN
+    	when(inputReaderUtil.readSelection()).thenReturn(1);  	
+    	when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(0);
+    	
+    	//THEN
+    	assertThat(parkingService.getNextParkingNumberIfAvailable()).isNull();
+    }
+    
+    @Test
+    public void getNextParkingNumberIfAvailableTestException() {
+    	//WHEN
+    	when(inputReaderUtil.readSelection()).thenReturn(4);  	
+    	
+    	//THEN
+    	assertThat(parkingService.getNextParkingNumberIfAvailable()).isNull();
+    }
+    
+    
   
 }
