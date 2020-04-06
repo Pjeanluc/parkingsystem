@@ -7,6 +7,9 @@ import com.parkit.parkingsystem.model.ParkingSpot;
 import com.parkit.parkingsystem.model.Ticket;
 import com.parkit.parkingsystem.service.ParkingService;
 import com.parkit.parkingsystem.util.InputReaderUtil;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -33,10 +36,12 @@ public class ParkingServiceTest {
     private static ParkingSpotDAO parkingSpotDAO;
     @Mock
     private static TicketDAO ticketDAO;
+    
 
     @BeforeEach
     private void setUpPerTest() {
         try {
+        	
             lenient().when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
             
             ParkingSpot parkingSpot = new ParkingSpot(1, ParkingType.CAR,false);
@@ -109,6 +114,26 @@ public class ParkingServiceTest {
     	//THEN
     	assertThat(parkingService.getNextParkingNumberIfAvailable()).isNotNull();
     }
+    
+    @Test
+    public void getNextParkingNumberIfAvailableTestNotAvaible() {
+    	//WHEN
+    	when(inputReaderUtil.readSelection()).thenReturn(1);  	
+    	when(parkingSpotDAO.getNextAvailableSlot(any(ParkingType.class))).thenReturn(0);
+    	
+    	//THEN
+    	assertThat(parkingService.getNextParkingNumberIfAvailable()).isNull();
+    }
+    
+    @Test
+    public void getNextParkingNumberIfAvailableTestException() {
+    	//WHEN
+    	when(inputReaderUtil.readSelection()).thenReturn(4);  	
+    	
+    	//THEN
+    	assertThat(parkingService.getNextParkingNumberIfAvailable()).isNull();
+    }
+    
     
   
 }
