@@ -51,8 +51,8 @@ public class ParkingDataBaseIT {
 
     @BeforeEach
     private void setUpPerTest() throws Exception {
-        lenient().when(inputReaderUtil.readSelection()).thenReturn(1);
-        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF");
+        lenient().when(inputReaderUtil.readSelection()).thenReturn(1,1,1,2);
+        when(inputReaderUtil.readVehicleRegistrationNumber()).thenReturn("ABCDEF","GHIJKL","MNOP");
         dataBasePrepareService.clearDataBaseEntries();
     }
 
@@ -75,6 +75,25 @@ public class ParkingDataBaseIT {
 		assertThat(getTicketTest.getParkingSpot().isAvailable()).isEqualTo(false);
 		
     }
+    
+    @Test
+    public void testParkingACarAndABike(){
+        //GIVEN
+        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        
+        //WHEN
+        parkingService.processIncomingVehicle();
+        parkingService.processIncomingVehicle();
+        
+        //THEN        
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");
+        assertThat(getTicketTest.getVehicleRegNumber()).isEqualTo("ABCDEF");
+        assertThat(getTicketTest.getParkingSpot().isAvailable()).isEqualTo(false);
+        getTicketTest = ticketDAO.getLastTicket("GHIJKL");
+        assertThat(getTicketTest.getVehicleRegNumber()).isEqualTo("GHIJKL");
+        assertThat(getTicketTest.getParkingSpot().isAvailable()).isEqualTo(false);
+        
+    }
 
     @Test
     public void testParkingLotExitLessThirtyMinutes() throws Exception{
@@ -82,7 +101,7 @@ public class ParkingDataBaseIT {
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     	Date inTime = new Date();
     	Date outTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  10 * 60 * 1000) ); //10 minutes
+        inTime.setTime( System.currentTimeMillis() - (10*60*1000) ); //10 minutes
         
         //mock incoming vehicle
         processInjectionParkingSpot(false);
@@ -104,7 +123,7 @@ public class ParkingDataBaseIT {
     	ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
     	Date inTime = new Date();
     	Date outTime = new Date();
-        inTime.setTime( System.currentTimeMillis() - (  90* 60 * 1000) ); 
+        inTime.setTime( System.currentTimeMillis() - (90*60*1000) ); 
         
         //mock incoming vehicle
         processInjectionParkingSpot(false);
@@ -119,6 +138,27 @@ public class ParkingDataBaseIT {
       	
     }
     
+    @Test
+    public void testParkingLotExitMoreOneDay() throws Exception{
+        //GIVEN
+        ParkingService parkingService = new ParkingService(inputReaderUtil, parkingSpotDAO, ticketDAO);
+        Date inTime = new Date();
+        Date outTime = new Date();
+        inTime.setTime( System.currentTimeMillis() - (24*60*60*1000) ); 
+        
+        //mock incoming vehicle
+        processInjectionParkingSpot(false);
+        processInjectionTicket(inTime,outTime);
+        
+        //WHEN
+        parkingService.processExitingVehicle();
+        
+        //THEN
+        Ticket getTicketTest = ticketDAO.getLastTicket("ABCDEF");       
+        assertThat(getTicketTest.getPrice()).isEqualTo(35.25);
+        
+    }
+    
     
     @Test
     public void testParkingLotExitMoreThirtyminutesWithDiscount() throws Exception{
@@ -129,13 +169,13 @@ public class ParkingDataBaseIT {
         //first Ticket 2h before
     	Date inTime1 = new Date();
     	Date outTime1 = new Date();
-        inTime1.setTime( System.currentTimeMillis() - (  120* 60 * 1000) ); 
-        outTime1.setTime( System.currentTimeMillis() - (  110* 60 * 1000) ); 
+        inTime1.setTime( System.currentTimeMillis() - (120*60*1000) ); 
+        outTime1.setTime( System.currentTimeMillis() - (110*60*1000) ); 
         processInjectionTicket(inTime1,outTime1);
         
         //Process incoming vehicle       
     	Date inTime2 = new Date();    	
-        inTime2.setTime( System.currentTimeMillis() - (  90* 60 * 1000) ); 
+        inTime2.setTime( System.currentTimeMillis() - (90*60*1000) ); 
         processInjectionParkingSpot(false);
         processInjectionTicket(inTime2,null);
            

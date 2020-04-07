@@ -44,39 +44,37 @@ public class Ticket {
     }
 
     public Date getInTime() {
-    Date localDate = inTime;
+        Date localDate = inTime;
         return localDate;
     }
 
     public void setInTime(Date inTime) {
         if (inTime == null) {
-	       this.inTime = null;
-		}
-		else {
-			this.inTime = new Date(inTime.getTime());
-		}
+            this.inTime = null;
+        } else {
+            this.inTime = new Date(inTime.getTime());
+        }
     }
 
     public Date getOutTime() {
-    	Date localDate = outTime;
-		return localDate;
+        Date localDate = outTime;
+        return localDate;
     }
 
     public void setOutTime(Date outTime) {
-    	if (outTime == null) {
-			this.outTime = null;
-		}
-		else {
-			this.outTime = new Date(outTime.getTime());
-		}
+        if (outTime == null) {
+            this.outTime = null;
+        } else {
+            this.outTime = new Date(outTime.getTime());
+        }
     }
 
-	public int getNbOfEntry() {
-		return nbOfEntry;
-	}
+    public int getNbOfEntry() {
+        return nbOfEntry;
+    }
 
-	public void setNbOfEntry(int nbOfEntry) {
-		this.nbOfEntry = nbOfEntry;
-	}
+    public void setNbOfEntry(int nbOfEntry) {
+        this.nbOfEntry = nbOfEntry;
+    }
 
-	}
+}
